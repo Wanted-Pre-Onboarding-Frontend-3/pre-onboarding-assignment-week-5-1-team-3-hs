@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import styled from 'styled-components';
 
+import { searchAPI } from '@/api/searchApi';
 import useDebounce from '@/utils/useDebounce';
 
 import { EMPTY_SUGGESTION } from './search.constants';
-import { searchSickNames } from './searchApi';
 import { SuggestionList } from './suggestionList';
 
 export const Search = () => {
@@ -22,8 +22,9 @@ export const Search = () => {
   useEffect(() => {
     if (debouncedQuery !== '') {
       (async () => {
-        const resp = await searchSickNames(debouncedQuery);
+        const resp = await searchAPI.searchSickNames(debouncedQuery);
         setSearchResult(resp);
+        // console.log(resp);
       })();
     }
   }, [debouncedQuery]);
