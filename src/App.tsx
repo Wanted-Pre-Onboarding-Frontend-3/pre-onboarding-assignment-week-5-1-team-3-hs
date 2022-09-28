@@ -1,11 +1,11 @@
-import React from 'react';
-import { createGlobalStyle } from 'styled-components';
-import reset from 'styled-reset';
+import { Search } from './components/search/search';
+import { GlobalStyles } from './styles';
 
-const GlobalStyle = createGlobalStyle`
-  ${reset}
-`;
-
-const App = () => <GlobalStyle />;
+const App = () => (
+  <>
+    <GlobalStyles />
+    <Search />
+  </>
+);
 
 export default App;
