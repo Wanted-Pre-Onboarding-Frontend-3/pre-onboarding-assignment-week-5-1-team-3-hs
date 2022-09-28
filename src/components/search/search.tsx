@@ -1,19 +1,32 @@
 import { Sick } from 'custom-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import styled from 'styled-components';
 
+import useDebounce from '@/utils/useDebounce';
+
 import { EMPTY_SUGGESTION } from './search.constants';
+import { searchSickNames } from './searchApi';
 import { SuggestionList } from './suggestionList';
 
 export const Search = () => {
-  const [query, setQuery] = useState<string>('');
   const [searchResult, setSearchResult] = useState<Sick[]>(EMPTY_SUGGESTION);
+  const [query, setQuery] = useState<string>('');
+  const debouncedQuery = useDebounce<string>(query, 300);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
     setQuery(value.trim());
   };
+
+  useEffect(() => {
+    if (debouncedQuery !== '') {
+      (async () => {
+        const resp = await searchSickNames(debouncedQuery);
+        setSearchResult(resp);
+      })();
+    }
+  }, [debouncedQuery]);
 
   return (
     <Container>
